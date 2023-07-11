@@ -1,7 +1,8 @@
-import Image from "next/image";
 
 import Todo from "../../lib/model/Todo.js";
 import mongoose from "mongoose";
+import dbConnect from "./utils/dbConnection.js";
+import { redirect } from "next/navigation";
 
 export default function Home() {
   async function newTodo(data) {
@@ -10,19 +11,15 @@ export default function Home() {
     let todo = data.get("todo")?.valueOf();
 
     try {
-      await mongoose.connect(
-        "mongodb://root:password123@127.0.0.1:27018/nextjs-13-server-action?authSource=admin",
-        {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-        },
-      );
+   dbConnect()
       let newTodo = new Todo({ title, todo });
       await newTodo.save();
       console.log(newTodo);
     } catch (e) {
       console.log(e);
     }
+
+    redirect("/show");
   }
 
   return (
