@@ -3,6 +3,7 @@ import Todo from "../../lib/model/Todo.js";
 import mongoose from "mongoose";
 import dbConnect from "./utils/dbConnection.js";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache.js";
 
 export default function Home() {
   async function newTodo(data) {
@@ -18,7 +19,7 @@ export default function Home() {
     } catch (e) {
       console.log(e);
     }
-
+    revalidatePath( '/show' )
     redirect("/show");
   }
 

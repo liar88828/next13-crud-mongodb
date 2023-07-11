@@ -3,6 +3,7 @@ import Todo from '../../../../lib/model/Todo'
 import { Suspense } from 'react'
 import Loading from '../../loading'
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
 export default async function edit({ params }) {
 	dbConnect()
@@ -16,7 +17,8 @@ export default async function edit({ params }) {
 			{ _id: params.id },
 			{ title, todo },
 		)
-		console.log(updateTodo)
+		console.log( updateTodo )
+		revalidatePath( '/show' )
 		redirect('/show')
 	}
 
